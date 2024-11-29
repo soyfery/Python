@@ -1,0 +1,43 @@
+lng_ru = 'абвгдежзийклмнопрстуфхцчшщъыьэюя'
+lng_en = 'abcdefghijklmnopqrstuvwxyz'
+
+def choiceLang(lng_ru, lng_en):
+	print("Выберите язык шифровки(ru/en)")
+	inputLang = str(input())
+	if inputLang == 'ru':
+		step = 32
+		return lng_ru, step
+	elif inputLang == 'en':
+		step = 26
+		return lng_en, step
+
+def headEncrypt():
+	print("Введите текст")
+	inputText = str(input())
+
+	print("Введите шаг сдвига")
+	num = int(input())
+
+	print("Шифруем или дешифруем?(enc/denc)")
+	choiceEncrypt = str(input())
+	if choiceEncrypt == 'enc':
+		num = num
+	elif choiceEncrypt == 'denc':
+		num = -num
+
+	return inputText, num
+
+def encryption(lang, step, inputText, num):
+	encryptText = list()
+	for i in inputText:
+		if i.islower() and i.lower() in lang:
+			encryptText.append(lang[(lang.find(i.lower()) + num) % step])
+		elif i.isupper() and i.lower() in lang:
+			encryptText.append(lang[(lang.find(i.lower()) + num) % step].upper())
+		else:
+			encryptText.append(i)
+	print(*encryptText, sep='')
+
+lang, step = choiceLang(lng_ru, lng_en)
+inputText, num = headEncrypt()
+encryption(lang, step, inputText, num)

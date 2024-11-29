@@ -1,0 +1,36 @@
+import random
+
+otv='да'
+print('Добро пожаловать в числовую угадайку')
+ch=0
+
+def is_valid(a, b):
+    if a>b or a<1:
+        print(f'А может быть все-таки введем целое число от 1 до {b}?')
+        return False
+    else:
+        return True
+        
+while otv=='да':
+    print('Введите максимальное число')
+    mx=int(input())
+    zc=random.randint(1,mx)
+    tr=True
+    while tr:
+        print(f'Введите число от 1 до {mx}')
+        n=int(input())
+        if is_valid(n, mx):
+            if n<zc:
+                print('Ваше число меньше загаданного, попробуйте еще разок')
+                ch+=1
+                continue
+            elif n>zc:
+                print('Ваше число больше загаданного, попробуйте еще разок')
+                ch+=1
+                continue
+            else:
+                print(f'Вы угадали число за {ch} попыток, поздравляем!', 'Хотите сыграть еще раз?', sep='\n')
+                tr=False
+    otv=input()
+
+print('Спасибо, что играли в числовую угадайку. Еще увидимся...')

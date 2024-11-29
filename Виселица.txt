@@ -1,0 +1,84 @@
+import random
+
+word_list=["человек", "слово", "лицо", "дверь", "земля", "работа", "ребенок", "история", "женщина", "развитие", "власть", "правительство", "начальник", "спектакль", "автомобиль", "экономика", "литература", "граница", "магазин", "председатель", "сотрудник", "республика", "личность"]
+
+def get_word():
+    word = random.choice(word_list)
+    return word.upper()
+    
+def display_hangman(tries):
+    line_1 = "--------"
+    line_2 = "|      |"
+    line_3 = "|       "
+    line_4 = "|       "
+    line_5 = "|       "
+    line_6 = "|       "
+    line_7 = "-       "
+    
+    if tries < 6:
+        line_3 = "|      O"
+    if tries < 5:
+        line_4 = "|      |"
+        line_5 = "|      |"
+    if tries < 4:
+        line_4 = "|     \\|"
+    if tries < 3:
+        line_4 = "|     \\|/"
+    if tries < 2:
+        line_6 = "|     / "
+    if tries < 1:
+        line_6 = "|     / \\"
+        
+    print(line_1, line_2, line_3, line_4, line_5, line_6, line_7, sep="\n")
+    
+def play(word):
+    word_complecton = "_" * len(word)
+    guessed = False
+    guessed_letters = []
+    guessed_words = []
+    tries = 6
+    print("Давайте играть в угадайку слов!")
+    print(display_hangman(tries))
+    print(word_complecton)
+    while tries > 0:
+        s = input('Вводи букву или слово: ').upper()
+        if not s.isalpha():
+            continue
+        elif s.isalpha() and len(s) == 1 and s in guessed_letters:
+            print(f"Буква {s} была названа")
+            continue
+        elif s.isalpha() and len(s) > 1 and s in guessed_words:
+            print("Слово {s} было названо")
+            continue
+        elif s.isalpha() and len(s) == 1:             # Проверка если ли введенная буква в слове
+            if s in word:
+                print(f"Угадал!!! Буква {s} присутсвтует в слове!")
+                guessed_letters.append(s)               # Добавляем угаданную букву в список названных букв
+                word_l = list(word_complecton)      # перевод из строки в список для того чтобы мы могли заменять  '_' на угаданную букву
+                for i in range(len(word)):                  # цикл кот заменяет '_' на угаданную букву.
+                    if s == word[i]:
+                        word_l[i] = s
+                word_complecton = "".join(word_l)                     # Возвращаем строку уже с угаданными буквами или буквой
+                print(word_complecton)                                      # Показываем какие позиции угаданы в строке
+                print(f"Продолжай в том же духе комрад")
+                if word_complecton.isalpha():
+                    print("Поздравляю комрад ты угадал слово!, висилица подождет :)")
+                    break
+            else:
+                tries -= 1
+                print(f"Не верно, осталось попыток {tries}")
+                print(display_hangman(tries))
+                if tries == 0:
+                    print(f"Ты не угадал слово {word}, не расстраивайся ибо тебе уже все равно))")                 #  Прощание ))))
+        elif s.isalpha() and len(s) > 1:
+            if s == word:
+                print("Поздравляю комрад ты угадал гребанное слово!! и сохранил свой зад :)")
+                break
+            elif s != word:
+                tries -= 1
+                print(f"Не верно, осталось попыток {tries}")
+                print(display_hangman(tries))
+                if tries == 0:
+                    print(f"Ты не угадал слово {word}, не расстраивайся ибо тебе уже все равно))")
+
+play(get_word())
